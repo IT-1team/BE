@@ -1,4 +1,4 @@
-package test.hrmaster;
+package seohan.hrmaster;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
