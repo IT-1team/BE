@@ -51,6 +51,8 @@ jobs:
           sudo chmod 666 /var/run/docker.sock
           
           # 환경변수 설정
+          echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> /home/ec2-user/.env
+          echo "DOCKER_REPO=${{ secrets.DOCKER_REPO }}" >> /home/ec2-user/.env
           echo "PROD_DB_URL=jdbc:mysql://db:3306/${{ secrets.MYSQL_DATABASE }}?serverTimezone=UTC&characterEncoding=UTF-8" >> /home/ec2-user/.env
           echo "PROD_DB_USER=${{ secrets.PROD_DB_USER }}" >> /home/ec2-user/.env
           echo "PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }}" >> /home/ec2-user/.env
