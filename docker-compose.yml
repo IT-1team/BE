@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   app:
-    image: ${DOCKER_USERNAME}/hrmaster:latest  # Spring 애플리케이션 Docker 이미지 이름
+    image: ${DOCKER_USERNAME}/${DOCKER_REPO}:latest  # Spring 애플리케이션 Docker 이미지 이름
     build:
       context: .  # Dockerfile 경로
       dockerfile: Dockerfile
