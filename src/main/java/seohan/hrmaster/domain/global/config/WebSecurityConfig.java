@@ -59,7 +59,8 @@ public class WebSecurityConfig {
                                 "/api/employees/**")
                         .authenticated()
                         .requestMatchers( // 인증x
-                                "/api/auth/**"
+                                "/api/auth/**",
+                                "/home"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .formLogin(AbstractAuthenticationFilterConfigurer::disable)
