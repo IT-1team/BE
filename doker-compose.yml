@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  app:
+    image: hrmaster/app:latest  # Spring 애플리케이션 Docker 이미지 이름
+    build:
+      context: .  # Dockerfile 경로
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # 호스트와 컨테이너 포트 매핑
+    environment:
+      SPRING_DATASOURCE_URL: ${PROD_DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${PROD_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${PROD_DB_PASSWORD}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      URL_SERVER: ${URL_SERVER}
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0  # MySQL 8.0 이미지 사용
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PROD_DB_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}  # MySQL 기본 데이터베이스 이름
+      MYSQL_USER: ${PROD_DB_USER}  # MySQL 사용자
+      MYSQL_PASSWORD: ${PROD_DB_PASSWORD}  # MySQL 비밀번호
+    ports:
+      - "3306:3306"  # MySQL 기본 포트
+    volumes:
+      - mysql-data:/var/lib/mysql  # MySQL 데이터 저장
+
+volumes:
+  mysql-data:  # MySQL 데이터 저장
