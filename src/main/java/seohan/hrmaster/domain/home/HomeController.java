@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 import seohan.hrmaster.domain.global.response.ApiResponse;
 import seohan.hrmaster.domain.global.response.GlobalResponse;
 
-@RestController("/api/home")
+@RestController
 public class HomeController {
 
-    @GetMapping
+    @GetMapping("/home")
     public ResponseEntity<ApiResponse<Void>> heathlyCheck(){
         return GlobalResponse.OK("헬시체크 성공",null);
     }
