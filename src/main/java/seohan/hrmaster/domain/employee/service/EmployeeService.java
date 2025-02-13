@@ -1,14 +1,19 @@
 package seohan.hrmaster.domain.employee.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seohan.hrmaster.domain.employee.dto.request.EmployeeRequestDTO;
+import seohan.hrmaster.domain.employee.dto.response.EmployeePageResponseDTO;
+import seohan.hrmaster.domain.employee.dto.response.EmployeeResponseDTO;
 import seohan.hrmaster.domain.employee.entity.Employee;
 import seohan.hrmaster.domain.employee.repository.EmployeeRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -53,6 +58,23 @@ public class EmployeeService {
         } while (employeeRepository.existsByEmpNUM(uniqueId));
 
         return uniqueId;
+    }
+
+    public EmployeePageResponseDTO getAllEmployee(Pageable pageable){
+
+        Page<Employee> employeePage = employeeRepository.findAll(pageable);
+
+        List<EmployeeResponseDTO> employeeResponseDTOList =
+                employeePage.stream()
+                        .map(EmployeeResponseDTO::new)
+                        .toList();
+
+        return new EmployeePageResponseDTO(
+                employeePage.getNumber()+1,
+                employeePage.getTotalPages(),
+                employeePage.getTotalElements(),
+                employeePage.getSize(),
+                employeeResponseDTOList);
     }
 
 }
