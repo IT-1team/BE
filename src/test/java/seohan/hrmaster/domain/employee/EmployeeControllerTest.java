@@ -10,11 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import seohan.hrmaster.domain.employee.dto.request.EmployeeRequestDTO;
+import seohan.hrmaster.domain.employee.entity.Employee;
 
 import java.time.LocalDate;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -81,7 +82,7 @@ class EmployeeControllerTest {
     void getEmployeeById_Success() throws Exception {
 
         // When & Then (API 호출 및 검증)
-        mockMvc.perform(get("/api/employees/" + 1)
+        mockMvc.perform(get("/api/employees/{employeeId}",1)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())  // HTTP 200 응답 확인
                 .andExpect(jsonPath("$.message").value("사원 상세 조회 성공"))  // 응답 메시지 확인
@@ -89,5 +90,32 @@ class EmployeeControllerTest {
                 .andExpect(jsonPath("$.data.name").value("홍길동"))  // 사원 이름 검증
                 .andExpect(jsonPath("$.data.email").value("test@example.com"))  // 이메일 검증
                 .andExpect(jsonPath("$.data.salary").value("5000"));  // 급여 검증
+    }
+
+    @Test
+    @WithMockUser(username = "testUser", roles = {"USER"})
+    @DisplayName("사원 수정 - 성공")
+    void employeeUpdate_Success() throws Exception {
+
+        // 수정할 데이터
+        EmployeeRequestDTO updateRequest = new EmployeeRequestDTO(
+                "김철수", "부산광역시", "해운대 456",
+                "010-5678-1234", "kim@example.com",
+                LocalDate.of(2023, 5, 10), "6000", "과장", "퇴사"
+        );
+
+        // When & Then
+        mockMvc.perform(put("/api/employees/{employeeId}",1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("사원 수정 성공"))
+                .andExpect(jsonPath("$.data.name").value("김철수"))
+                .andExpect(jsonPath("$.data.address").value("부산광역시"))
+                .andExpect(jsonPath("$.data.phoneNum").value("010-5678-1234"))
+                .andExpect(jsonPath("$.data.email").value("kim@example.com"))
+                .andExpect(jsonPath("$.data.salary").value("6000"))
+                .andExpect(jsonPath("$.data.emRank").value("과장"))
+                .andExpect(jsonPath("$.data.status").value("퇴사"));
     }
 }

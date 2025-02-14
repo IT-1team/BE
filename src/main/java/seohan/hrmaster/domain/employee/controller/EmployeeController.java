@@ -41,7 +41,8 @@ public class EmployeeController {
         Pageable updatedPageable =
                 PageRequest.of(correctedPage, pageable.getPageSize(), pageable.getSort());
 
-        EmployeePageResponseDTO employeePageResponseDTO = employeeService.getAllEmployee(updatedPageable);
+        EmployeePageResponseDTO employeePageResponseDTO =
+                employeeService.getAllEmployee(updatedPageable);
 
         return GlobalResponse.OK("사원 목록 조회 성공", employeePageResponseDTO);
     }
@@ -50,8 +51,20 @@ public class EmployeeController {
     public ResponseEntity<ApiResponse<EmployeeResponseDTO>> getEmployeeById(
             @PathVariable Long employeeId) {
 
-        EmployeeResponseDTO employeeResponseDTO = employeeService.getEmployeeById(employeeId);
+        EmployeeResponseDTO employeeResponseDTO =
+                employeeService.getEmployeeById(employeeId);
 
         return GlobalResponse.OK("사원 상세 조회 성공",employeeResponseDTO);
+    }
+
+    @PutMapping("/{employeeId}")
+    public ResponseEntity<ApiResponse<EmployeeResponseDTO>> employeeUpdate(
+            @PathVariable Long employeeId,
+            @RequestBody @Valid EmployeeRequestDTO employeeRequestDTO){
+
+        EmployeeResponseDTO employeeResponseDTO =
+                employeeService.employeeUpdate(employeeId, employeeRequestDTO);
+
+        return GlobalResponse.OK("사원 수정 성공",employeeResponseDTO);
     }
 }
