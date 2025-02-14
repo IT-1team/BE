@@ -22,6 +22,12 @@ public class EmployeeRequestDTO {
     private String address2;
 
     @NotBlank
+    private String departmentName;
+
+    @NotBlank
+    private String teamName;
+
+    @NotBlank
     @Size(max = 13)
     private String phoneNum;
 
