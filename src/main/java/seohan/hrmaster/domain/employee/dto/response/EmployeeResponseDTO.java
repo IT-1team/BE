@@ -1,9 +1,5 @@
 package seohan.hrmaster.domain.employee.dto.response;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import seohan.hrmaster.domain.employee.entity.Employee;
 
@@ -21,6 +17,10 @@ public class EmployeeResponseDTO {
     private String address;
 
     private String address2;
+
+    private String departmentName;
+
+    private String teamName;
 
     private String phoneNum;
 
@@ -41,6 +41,8 @@ public class EmployeeResponseDTO {
         this.hireDate = employee.getHireDate();
         this.email = employee.getEmail();
         this.phoneNum = employee.getPhoneNum();
+        this.departmentName = employee.getDepartment().getDepartmentName();
+        this.teamName = employee.getDepartment().getTeamName();
         this.address2 = employee.getAddress2();
         this.address = employee.getAddress();
         this.name = employee.getName();
