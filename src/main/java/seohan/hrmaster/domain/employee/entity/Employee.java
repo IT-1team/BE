@@ -14,6 +14,10 @@ public class Employee extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
 
+    @ManyToOne
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
     @Column(nullable = false)
     private int empNUM;
 
@@ -44,9 +48,10 @@ public class Employee extends BaseTimeEntity {
     private String status;
 
     public void setEmployeeDetails(
-            String name, String address, String address2, String phoneNum,
+            Department department, String name, String address, String address2, String phoneNum,
             String email, LocalDate hireDate, String salary, String emRank, String status) {
 
+        this.department = department;
         this.name = name;
         this.address = address;
         this.address2 = address2;
@@ -59,10 +64,12 @@ public class Employee extends BaseTimeEntity {
     }
 
     public void employCreate(
-            int empNUM, String name, String address, String address2, String phoneNum,
+            Department department, int empNUM, String name, String address, String address2, String phoneNum,
             String email, LocalDate hireDate, String salary, String emRank, String status) {
 
         this.empNUM = empNUM;
-        setEmployeeDetails(name, address, address2, phoneNum, email, hireDate, salary, emRank, status);
+        setEmployeeDetails(
+                department, name, address, address2, phoneNum,
+                email, hireDate, salary, emRank, status);
     }
 }

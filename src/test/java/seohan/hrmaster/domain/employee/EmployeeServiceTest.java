@@ -33,6 +33,8 @@ class EmployeeServiceTest {
                 "홍길동",
                 "서울특별시 강남구",
                 "강남대로 123",
+                "기획본부",
+                "IT기획",
                 "010-1234-5678",
                 "test@example.com",
                 LocalDate.of(2025, 2, 13),

@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import seohan.hrmaster.domain.employee.dto.request.EmployeeRequestDTO;
 import seohan.hrmaster.domain.employee.dto.response.EmployeePageResponseDTO;
 import seohan.hrmaster.domain.employee.dto.response.EmployeeResponseDTO;
+import seohan.hrmaster.domain.employee.entity.Department;
 import seohan.hrmaster.domain.employee.entity.Employee;
+import seohan.hrmaster.domain.employee.repository.DepartmentRepository;
 import seohan.hrmaster.domain.employee.repository.EmployeeRepository;
 import seohan.hrmaster.domain.global.exception.CustomException;
 import seohan.hrmaster.domain.global.exception.ErrorCode;
@@ -24,12 +26,20 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+    private final DepartmentRepository departmentRepository;
+
     @Transactional
-    public void employeeCreate(EmployeeRequestDTO employeeRequestDTO){
+    public void employeeCreate(EmployeeRequestDTO employeeRequestDTO) {
 
         Employee employee = new Employee();
 
+        Department department =
+                departmentRepository.findByDepartmentNameAndTeamName(
+                                employeeRequestDTO.getDepartmentName(), employeeRequestDTO.getTeamName())
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+
         employee.employCreate(
+                department,
                 generateUniqueEmpNUM(),
                 employeeRequestDTO.getName(),
                 employeeRequestDTO.getAddress(),
@@ -62,7 +72,7 @@ public class EmployeeService {
         return uniqueId;
     }
 
-    public EmployeePageResponseDTO getAllEmployee(Pageable pageable){
+    public EmployeePageResponseDTO getAllEmployee(Pageable pageable) {
 
         Page<Employee> employeePage = employeeRepository.findAll(pageable);
 
@@ -72,14 +82,14 @@ public class EmployeeService {
                         .toList();
 
         return new EmployeePageResponseDTO(
-                employeePage.getNumber()+1,
+                employeePage.getNumber() + 1,
                 employeePage.getTotalPages(),
                 employeePage.getTotalElements(),
                 employeePage.getSize(),
                 employeeResponseDTOList);
     }
 
-    public EmployeeResponseDTO getEmployeeById(Long employeeId){
+    public EmployeeResponseDTO getEmployeeById(Long employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
@@ -88,12 +98,18 @@ public class EmployeeService {
     }
 
     public EmployeeResponseDTO employeeUpdate(Long employeeId,
-                                              EmployeeRequestDTO employeeRequestDTO){
+                                              EmployeeRequestDTO employeeRequestDTO) {
 
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+
+        Department department =
+                departmentRepository.findByDepartmentNameAndTeamName(
+                                employeeRequestDTO.getDepartmentName(), employeeRequestDTO.getTeamName())
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
 
         employee.setEmployeeDetails(
+                department,
                 employeeRequestDTO.getName(),
                 employeeRequestDTO.getAddress(),
                 employeeRequestDTO.getAddress2(),
