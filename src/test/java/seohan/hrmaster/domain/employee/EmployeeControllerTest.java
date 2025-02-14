@@ -74,4 +74,20 @@ class EmployeeControllerTest {
                 .andExpect(jsonPath("$.data.responseDTOList[0].name").isString()) // 첫 번째 직원의 이름이 존재하는지 확인
                 .andExpect(jsonPath("$.data.responseDTOList[0].email").isString()); // 첫 번째 직원의 이메일이 존재하는지 확인
     }
+
+    @Test
+    @WithMockUser(username = "testUser", roles = {"USER"})
+    @DisplayName("사원 ID로 조회 - 성공")
+    void getEmployeeById_Success() throws Exception {
+
+        // When & Then (API 호출 및 검증)
+        mockMvc.perform(get("/api/employees/" + 1)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())  // HTTP 200 응답 확인
+                .andExpect(jsonPath("$.message").value("사원 상세 조회 성공"))  // 응답 메시지 확인
+                .andExpect(jsonPath("$.data.employeeId").value(1))  // ID 검증
+                .andExpect(jsonPath("$.data.name").value("홍길동"))  // 사원 이름 검증
+                .andExpect(jsonPath("$.data.email").value("test@example.com"))  // 이메일 검증
+                .andExpect(jsonPath("$.data.salary").value("5000"));  // 급여 검증
+    }
 }
