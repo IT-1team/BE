@@ -43,19 +43,10 @@ public class Employee extends BaseTimeEntity {
     @Column(nullable = false)
     private String status;
 
-    public void employCreate(
-            int empNUM,
-            String name,
-            String address,
-            String address2,
-            String phoneNum,
-            String email,
-            LocalDate hireDate,
-            String salary,
-            String emRank,
-            String status) {
+    public void setEmployeeDetails(
+            String name, String address, String address2, String phoneNum,
+            String email, LocalDate hireDate, String salary, String emRank, String status) {
 
-        this.empNUM = empNUM;
         this.name = name;
         this.address = address;
         this.address2 = address2;
@@ -65,5 +56,13 @@ public class Employee extends BaseTimeEntity {
         this.salary = salary;
         this.emRank = emRank;
         this.status = status;
+    }
+
+    public void employCreate(
+            int empNUM, String name, String address, String address2, String phoneNum,
+            String email, LocalDate hireDate, String salary, String emRank, String status) {
+
+        this.empNUM = empNUM;
+        setEmployeeDetails(name, address, address2, phoneNum, email, hireDate, salary, emRank, status);
     }
 }
