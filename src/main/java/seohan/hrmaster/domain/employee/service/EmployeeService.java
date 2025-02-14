@@ -10,6 +10,8 @@ import seohan.hrmaster.domain.employee.dto.response.EmployeePageResponseDTO;
 import seohan.hrmaster.domain.employee.dto.response.EmployeeResponseDTO;
 import seohan.hrmaster.domain.employee.entity.Employee;
 import seohan.hrmaster.domain.employee.repository.EmployeeRepository;
+import seohan.hrmaster.domain.global.exception.CustomException;
+import seohan.hrmaster.domain.global.exception.ErrorCode;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -75,6 +77,14 @@ public class EmployeeService {
                 employeePage.getTotalElements(),
                 employeePage.getSize(),
                 employeeResponseDTOList);
+    }
+
+    public EmployeeResponseDTO getEmployeeById(Long employeeId){
+
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+
+        return new EmployeeResponseDTO(employee);
     }
 
 }
