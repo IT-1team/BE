@@ -87,4 +87,26 @@ public class EmployeeService {
         return new EmployeeResponseDTO(employee);
     }
 
+    public EmployeeResponseDTO employeeUpdate(Long employeeId,
+                                              EmployeeRequestDTO employeeRequestDTO){
+
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND));
+
+        employee.setEmployeeDetails(
+                employeeRequestDTO.getName(),
+                employeeRequestDTO.getAddress(),
+                employeeRequestDTO.getAddress2(),
+                employeeRequestDTO.getPhoneNum(),
+                employeeRequestDTO.getEmail(),
+                employeeRequestDTO.getHireDate(),
+                employeeRequestDTO.getSalary(),
+                employeeRequestDTO.getEmRank(),
+                employeeRequestDTO.getStatus()
+        );
+
+        employeeRepository.save(employee);
+
+        return new EmployeeResponseDTO(employee);
+    }
 }
