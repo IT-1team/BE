@@ -8,31 +8,31 @@ import java.time.LocalDate;
 @Getter
 public class EmployeeResponseDTO {
 
-    private Long employeeId;
+    private final Long employeeId;
 
-    private int empNUM;
+    private final int empNUM;
 
-    private String name;
+    private final String name;
 
-    private String address;
+    private final String address;
 
-    private String address2;
+    private final String address2;
 
-    private String departmentName;
+    private final String departmentName;
 
-    private String teamName;
+    private final String teamName;
 
-    private String phoneNum;
+    private final String phoneNum;
 
-    private String email;
+    private final String email;
 
-    private LocalDate hireDate;
+    private final LocalDate hireDate;
 
-    private String salary;
+    private final String salary;
 
-    private String emRank;
+    private final String emRank;
 
-    private String status;
+    private final String status;
 
     public EmployeeResponseDTO(Employee employee) {
         this.status = employee.getStatus();
